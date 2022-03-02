@@ -171,6 +171,11 @@ namespace jazz {
         T re_ = T{0};
         T im_ = T{0};
     };
+
+    using ComplexF = Complex_<float>;
+    using ComplexD = Complex_<double>;
+
+    using Complex = ComplexD;
 }
 
 #endif //LIBJAZZ_COMPLEX_H
