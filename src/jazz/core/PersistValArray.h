@@ -5,16 +5,18 @@
 #ifndef LIBJAZZ_PERSISTVALARRAY_H
 #define LIBJAZZ_PERSISTVALARRAY_H
 
-#include "Array.h"
-#include "jazz/core/jazz_config.h"
-#include "jazz/core/ByteBuffer.h"
+#include "ValArray.h"
+#include "jazz/jazz_config.h"
 
 namespace jazz {
-    class PersistValArray : public Array<Real> {
+    class  ByteBuffer;
+    class PersistValArray : public ValArray {
     public:
         explicit PersistValArray(std::size_t size);
 
         PersistValArray(std::size_t size, ElementType val);
+
+        ~PersistValArray() override;
 
     private:
         enum {
@@ -22,7 +24,7 @@ namespace jazz {
         };
 
     private:
-        ByteBuffer buffer;
+        ByteBuffer* buffer = nullptr;
     };
 }
 

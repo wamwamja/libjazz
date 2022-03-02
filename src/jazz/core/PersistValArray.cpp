@@ -3,18 +3,23 @@
 //
 
 #include "PersistValArray.h"
+#include "jazz/core/ByteBuffer.h"
 
 jazz::PersistValArray::PersistValArray(std::size_t size) {
-    buffer.resize(ElementSize * size);
-    wrap(buffer.reinterpret<ElementType>(), size);
+    buffer = new ByteBuffer(ElementSize*size);
+    wrap(buffer->reinterpret<ElementType>(), size);
 }
 
 jazz::PersistValArray::PersistValArray(std::size_t size, double val) {
-    buffer.resize(ElementSize * size);
-    wrap(buffer.reinterpret<ElementType>(), size);
-    auto ptr = buffer.reinterpret<ElementType>();
+    buffer = new ByteBuffer(ElementSize*size);
+    wrap(buffer->reinterpret<ElementType>(), size);
+    auto ptr = buffer->reinterpret<ElementType>();
     for (int i = 0; i < size; ++i) {
         ptr[i] = val;
     }
+}
+
+jazz::PersistValArray::~PersistValArray() {
+    delete buffer;
 }
 

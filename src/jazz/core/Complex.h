@@ -5,7 +5,7 @@
 #ifndef LIBJAZZ_COMPLEX_H
 #define LIBJAZZ_COMPLEX_H
 
-#include "jazz_config.h"
+#include "jazz/jazz_config.h"
 
 namespace jazz {
     template<typename T>

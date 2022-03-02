@@ -5,9 +5,9 @@
 #ifndef LIBJAZZ_FUNCTION_H
 #define LIBJAZZ_FUNCTION_H
 
-#include "jazz/core/Array.h"
-
 namespace jazz{
+
+    class ValArray;
 
     class Function {
     public:
@@ -15,8 +15,7 @@ namespace jazz{
         virtual ~Function() = default;
 
     public:
-
-
+        virtual void eval(const ValArray* x, ValArray* fx) = 0;
     };
 }
 
