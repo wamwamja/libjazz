@@ -8,6 +8,7 @@
 #include <cstring>
 #include <memory>
 #include <cmath>
+#include <limits>
 
 #if defined(_WIN32_) || defined(WIN32) || defined(_WIN64_) || defined(WIN64)
 #define JAZZ_EXPORT __declspec(dllexport)
@@ -17,8 +18,11 @@
 #define JAZZ_EXPORT
 #endif
 
-namespace jazz{
+namespace jazz {
     using Real = double;
+    struct Zero {
+        static constexpr Real value = std::numeric_limits<Real>::epsilon();
+    };
 }
 
 #endif //LIBJAZZ_JAZZ_CONFIG_H

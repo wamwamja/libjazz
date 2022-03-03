@@ -51,6 +51,7 @@ namespace jazz {
         Array &wrap(ElementType *ptr, std::size_t length) {
             elem_data = ptr;
             elem_count = length;
+            return *this;
         }
 
     private:
