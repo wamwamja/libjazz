@@ -175,7 +175,7 @@ namespace jazz {
     using ComplexF = Complex_<float>;
     using ComplexD = Complex_<double>;
 
-    using Complex = ComplexD;
+    using Complex = Complex_<Real>;
 }
 
 #endif //LIBJAZZ_COMPLEX_H

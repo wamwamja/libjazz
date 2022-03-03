@@ -10,87 +10,89 @@
 
 namespace jazz {
     template<typename T>
-    struct Vector3 {
+    struct Vector3_ {
+    public:
+        using RealType = T;
     public:
         T x{0}, y{0}, z{0};
 
     public:
-        Vector3() = default;
+        Vector3_() = default;
 
-        explicit Vector3(T x_, T y_ = 0, T z_ = 0) : x(x_), y(y_), z(z_) {};
+        explicit Vector3_(T x_, T y_ = 0, T z_ = 0) : x(x_), y(y_), z(z_) {};
 
-        ~Vector3() = default;
+        ~Vector3_() = default;
 
     public: // operator
-        Vector3 &operator+=(const Vector3 &b) {
+        Vector3_ &operator+=(const Vector3_ &b) {
             x += b.x;
             y += b.y;
             z += b.z;
             return *this;
         }
 
-        Vector3 &operator+=(T b) {
+        Vector3_ &operator+=(T b) {
             x += b;
             y += b;
             z += b;
             return *this;
         }
 
-        Vector3 operator+(const Vector3 &b) const {
-            Vector3 res = *this;
+        Vector3_ operator+(const Vector3_ &b) const {
+            Vector3_ res = *this;
             return std::move(res += b);
         }
 
-        Vector3 operator+(T b) const {
-            Vector3 res = *this;
+        Vector3_ operator+(T b) const {
+            Vector3_ res = *this;
             return std::move(res += b);
         }
 
-        friend Vector3 operator+(T a, const Vector3 &b) {
+        friend Vector3_ operator+(T a, const Vector3_ &b) {
             return std::move(b + a);
         }
 
-        Vector3 &operator-=(const Vector3 &b) {
+        Vector3_ &operator-=(const Vector3_ &b) {
             x -= b.x;
             y -= b.y;
             z -= b.z;
             return *this;
         }
 
-        Vector3 &operator-=(T b) {
+        Vector3_ &operator-=(T b) {
             x -= b;
             y -= b;
             z -= b;
             return *this;
         }
 
-        Vector3 operator-(const Vector3 &b) const {
-            Vector3 res = *this;
+        Vector3_ operator-(const Vector3_ &b) const {
+            Vector3_ res = *this;
             return std::move(res -= b);
         }
 
-        Vector3 operator-(T b) const {
-            Vector3 res = *this;
+        Vector3_ operator-(T b) const {
+            Vector3_ res = *this;
             return std::move(res -= b);
         }
 
-        Vector3 &operator*=(T b) {
+        Vector3_ &operator*=(T b) {
             x *= b;
             y *= b;
             z *= b;
             return *this;
         }
 
-        Vector3 operator*(T b) const {
-            Vector3 res = *this;
+        Vector3_ operator*(T b) const {
+            Vector3_ res = *this;
             return std::move(res *= b);
         }
 
-        friend Vector3 operator*(T a, const Vector3 &b) {
+        friend Vector3_ operator*(T a, const Vector3_ &b) {
             return std::move(b * a);
         }
 
-        Vector3 &operator/=(T b) {
+        Vector3_ &operator/=(T b) {
             if (b != T(0)) {
                 x /= b;
                 y /= b;
@@ -99,20 +101,29 @@ namespace jazz {
             return *this;
         }
 
+        Vector3_ operator/(T b) const {
+            Vector3_ res = *this;
+            return std::move(res /= b);
+        }
+
+        bool operator==(const Vector3_ &b) const {
+            return x == b.x && y == b.y && z == b.z;
+        }
+
         // algebra
-        T dot(const Vector3 &b) const {
+        T dot(const Vector3_ &b) const {
             return (x * b.x + y * b.y + z * b.z);
         }
 
-        T operator*(const Vector3 &b) const {
+        T operator*(const Vector3_ &b) const {
             return dot(b);
         }
 
-        Vector3 cross(const Vector3 &b) {
-            return Vector3{y * b.z - z * b.y, z * b.x - x * b.z, x * b.y - y * b.x};
+        Vector3_ cross(const Vector3_ &b) {
+            return Vector3_{y * b.z - z * b.y, z * b.x - x * b.z, x * b.y - y * b.x};
         }
 
-        Vector3 operator^(const Vector3 &b) {
+        Vector3_ operator^(const Vector3_ &b) {
             return cross(b);
         }
 
@@ -125,6 +136,11 @@ namespace jazz {
         }
 
     };
+
+    using Vector3F = Vector3_<float>;
+    using Vector3D = Vector3_<double>;
+
+    using Vector3 = Vector3_<Real>;
 }
 
 #endif //LIBJAZZ_VECTOR3_H
