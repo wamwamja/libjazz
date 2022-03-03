@@ -44,33 +44,52 @@ jazz::Real jazz::Calculator::numerical_derivative_second(RealFunc func, jazz::Re
     return 0;
 }
 
+// Lagrange Interpolation
+// Assume we have N+1 points y_0 = f(x_0), ... , y_N = f(x_N) where all the x_i are distinct 2-by-2.
+// Classic formulae : P_N(x) = \sum_{i=0}^{N} \prod_{k \ne i} \frac{x-x_k}{x_i - x_k} y_i
+// Write P_N as
+// P_N = a_0 + a_1(x-x_0) + a_1(x-x0)(x-x_1) + ... + a_N(x-x_0)...(x-x_{N-1})
+// then we get
+// a_0 = f(x_0)
+// a_0 + a_1(x_1-x_0) = f(x_1)
+// a_0 + a_1(x_2-x_0) + a_2(x_2-x_0)(x_2-x_1) = f(x_2)
+// ...       ...             ...                ...
+// We calculate a_k and f(x) \approx P_N(x), by a recursive method
+// a_0 = f(x_0)                                     f_{0x} = (f(x)-f(x_0))/(x-x_0)
+// a_1 = (f(x_1)-a_0)/(x_1-x_0) = f_{01}            f_{01x} = (f_{0x} - f_{01})/(x-x_1)
+// a_2 = ... = f_{012}                              f_{012x} = (f_{01x} - f_{012})/(x-x_2)
+//       ...                                         ...
+// Note that P_N(x) = a_0 + f_{01}(x_1-x_0) + f_{012}(x_2-x_0)(x_2-x_1) + ... + f_{012...N}(...)
+//
 jazz::Real
-jazz::Calculator::lagrange_interpolate(jazz::Real *ax, const jazz::Real *ay, int count, jazz::Real x, jazz::Real *dy) {
+jazz::Calculator::lagrange_interpolate(jazz::Real *xi, const jazz::Real *yi, int count, jazz::Real x, jazz::Real *dy) {
     auto c = new Real[count];
     auto d = new Real[count];
-    auto dif = std::fabs(x - ax[0]);
+    auto dif = std::fabs(x - xi[0]);
     Real den, dift, ho, hp, w;
     int ns = 1;
     for (int i = 0; i < count; ++i) {
-        if ((dift = std::fabs(x - ax[i]) < dif)) {
+        dift = std::fabs(x - xi[i]);
+        if (dift < dif) {
             ns = i;
             dif = dift;
         }
-        c[i] = ay[i];
-        d[i] = ay[i];
+        c[i] = yi[i];
+        d[i] = yi[i];
     }
 
     Real dy_t;
 
-    auto y = ay[ns--];
+    auto y = yi[ns--];
     auto M = count - 1;
     for (int m = 0; m < M; ++m) {
         auto N = count - m;
         for (int n = 0; n < N; ++n) {
-            ho = ax[n] - x;
-            hp = ax[n + m] - x;
+            ho = xi[n] - x;
+            hp = xi[n + m] - x;
             w = c[n + 1] - d[n];
-            if ((den = ho - hp) < Zero::value) {
+            den = ho - hp;
+            if (den < Zero::value) {
                 // TODO handle error here.
             }
             den = w / den;

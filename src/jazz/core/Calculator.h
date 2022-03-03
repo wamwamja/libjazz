@@ -24,7 +24,7 @@ namespace jazz {
         static Real
         numerical_derivative_second(RealFunc func, Real x, Real h, SecondDerivativeMethod method = SECOND_CENTRAL_3_POINT);
 
-        static Real lagrange_interpolate(Real* ax, const Real* ay, int count, Real x, Real* dy = nullptr);
+        static Real lagrange_interpolate(Real* xi, const Real* yi, int count, Real x, Real* dy = nullptr);
     };
 }
 
