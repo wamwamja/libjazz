@@ -1,5 +1,5 @@
 //
-// Created by meitu on 2022/3/2.
+// Created by jazz on 2022/3/2.
 //
 
 #ifndef LIBJAZZ_COMPLEX_H
