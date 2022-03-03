@@ -32,7 +32,7 @@ jazz::Real jazz::Calculator::numerical_derivative_second(RealFunc func, jazz::Re
     switch (method) {
 
         case SECOND_CENTRAL_3_POINT:
-            ddf = func(x + h) - func(x - h) - 2.0 * func(x);
+            ddf = func(x + h) + func(x - h) - 2.0 * func(x);
             return ddf / h / h;
             break;
         case SECOND_CENTRAL_5_POINT:
