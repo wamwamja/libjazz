@@ -20,6 +20,10 @@ jazz::Real jazz::Calculator::numerical_derivative(RealFunc func, jazz::Real x, j
             df = func(x + h) - func(x - h);
             return df / (2.0 * h);
             break;
+        case FIRST_CENTRAL_5_POINT:
+            auto h2 = 2.0 * h;
+            df = func(x - h2) - 8.0 * func(x - h) + 8.0 * func(x + h) - func(x + h2);
+            return df / 12.0 / h;
     }
 
     return df / h;
@@ -34,11 +38,6 @@ jazz::Real jazz::Calculator::numerical_derivative_second(RealFunc func, jazz::Re
         case SECOND_CENTRAL_3_POINT:
             ddf = func(x + h) + func(x - h) - 2.0 * func(x);
             return ddf / h / h;
-            break;
-        case SECOND_CENTRAL_5_POINT:
-            auto h2 = 2.0 * h;
-            ddf = func(x - h2) - 8.0 * func(x - h) - 8.0 * func(x + h) - func(x + h2);
-            return ddf / 12.0 / h;
             break;
     }
     return 0;

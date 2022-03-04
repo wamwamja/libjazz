@@ -12,11 +12,11 @@ namespace jazz {
     public:
         using RealFunc = Real(*)(Real);
         enum FirstDerivativeMethod {
-            FIRST_FORWARD_2_POINT, FIRST_BACKWARD_2_POINT, FIRST_CENTRAL_3_POINT,
+            FIRST_FORWARD_2_POINT, FIRST_BACKWARD_2_POINT, FIRST_CENTRAL_3_POINT,FIRST_CENTRAL_5_POINT
         };
 
         enum SecondDerivativeMethod {
-            SECOND_CENTRAL_3_POINT, SECOND_CENTRAL_5_POINT
+            SECOND_CENTRAL_3_POINT
         };
 
         static Real numerical_derivative(RealFunc func, Real x, Real h, FirstDerivativeMethod method = FIRST_CENTRAL_3_POINT);

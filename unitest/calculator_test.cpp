@@ -21,6 +21,7 @@ TEST_F(CalculatorTest, FirstDerivative) {
     jazz::Real K = 10;
     auto ub1 = K * h;
     auto ub2 = ub1 * h;
+    auto ub4 = ub2 * h * h;
     jazz::Real step = 0.1;
     auto x = x0;
     for (int i = 0; i < 10; ++i) {
@@ -42,7 +43,15 @@ TEST_F(CalculatorTest, FirstDerivative) {
     for (int i = 0; i < 10; ++i) {
         auto d = jazz::Calculator::numerical_derivative(std::exp, x, h,
                                                         jazz::Calculator::FIRST_CENTRAL_3_POINT);
-        EXPECT_TRUE(std::fabs(d - std::exp(x)) < ub1);
+        EXPECT_TRUE(std::fabs(d - std::exp(x)) < ub2);
+        x += step;
+    }
+
+    x = x0;
+    for (int i = 0; i < 10; ++i) {
+        auto d = jazz::Calculator::numerical_derivative(std::exp, x, h,
+                                                        jazz::Calculator::FIRST_CENTRAL_5_POINT);
+        EXPECT_TRUE(std::fabs(d - std::exp(x)) < ub4);
         x += step;
     }
 }
@@ -51,12 +60,13 @@ TEST_F(CalculatorTest, SecondDerivative) {
     jazz::Real x0 = 1e-3;
     jazz::Real h = 1e-3;
     jazz::Real K = 10;
-    auto ub = K * h * h;
+    auto ub2 = K * h * h;
     jazz::Real step = 0.1;
     auto x = x0;
     for (int i = 0; i < 10; ++i) {
-        auto d = jazz::Calculator::numerical_derivative_second(std::exp, x, h);
-        EXPECT_TRUE(std::fabs(d - std::exp(x)) < ub);
+        auto d = jazz::Calculator::numerical_derivative_second(std::exp, x, h,
+                                                               jazz::Calculator::SECOND_CENTRAL_3_POINT);
+        EXPECT_TRUE(std::fabs(d - std::exp(x)) < ub2);
         x += step;
     }
 }
