@@ -3,6 +3,7 @@
 //
 
 #include "Calculator.h"
+#include "jazz/core/VectorBase.h"
 
 jazz::Real jazz::Calculator::numerical_derivative(RealFunc func, jazz::Real x, jazz::Real h,
                                                   jazz::Calculator::FirstDerivativeMethod method) {
@@ -60,6 +61,31 @@ jazz::Real jazz::Calculator::numerical_derivative_second(RealFunc func, jazz::Re
 //       ...                                         ...
 // Note that P_N(x) = a_0 + f_{01}(x_1-x_0) + f_{012}(x_2-x_0)(x_2-x_1) + ... + f_{012...N}(...)
 //
+// It has a better way to improve the
+// Here comes the Neville's algorithm. See https://en.wikipedia.org/wiki/Neville%27s_algorithm
+//
+// In short, the algorithm can be understood with the following triangle table.
+// x_0 y_0 = P_0
+//                P_{01}
+// x_1 y_1 = P_1          P_{012}
+//                P_{12}            P_{0123}
+// x_2 y_2 = P_2          P_{123}
+//                P_{23}
+// x_3 y_3 = P_3
+// The table shows an example for calculate the polynomial passing 4 points, where x_i and y_i has the same meaning
+// as previous; P_{(i)(i+1)..(j)} is the polynomial passing through points (x_i,y_i) ... (x_j, y_j).
+// There is a relationship between the son and its two parents,
+// P_{i)(i+1)..(i+m)} = \frac{ (x-x_{i+m})P_{i(i+1)...(i+m)-1} - (x - x_i)P_{(i+1)(i+2)...(i_m)} } { x_i - x_{i+m}} (*)
+// A further improvement is keep track of the small differences between parents and sons, namely to define
+// C_{m,i} = P_{i...(i+m)} - P_{i...(i+m-1)}
+// D_{m,i} = P_{i...(i+m)} - P_{(i+1)...(i+m)}
+// One can easily derive from (*) that
+// D_{m+1,i} = \frac{ (x_{i+m+1-x} - x)(C_{m,i+1} - D_{m,i})}{ x_i - x_{i+m+1}}
+// C_{m+1,i} = \frac{ (x_i - x)(C_{m,i+1}-D_{m,i})} { x_i - x_{i+m+1}}
+//
+// The final answer P_{0...(N-1)} is equal to the sum of any y_i plus a set of
+// C’s and/or D’s that form a path through the family tree to the rightmost son.
+//
 jazz::Real
 jazz::Calculator::lagrange_interpolate(jazz::Real *xi, const jazz::Real *yi, int count, jazz::Real x, jazz::Real *dy) {
     auto c = new Real[count];
@@ -105,5 +131,5 @@ jazz::Calculator::lagrange_interpolate(jazz::Real *xi, const jazz::Real *yi, int
 
     delete[]c;
     delete[]d;
-    return 0;
+    return y;
 }
