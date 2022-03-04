@@ -2,20 +2,29 @@
 // Created by jazz on 2022/3/2.
 //
 
-#ifndef LIBJAZZ_ARRAY_H
-#define LIBJAZZ_ARRAY_H
+#ifndef LIBJAZZ_ARRAYBASE_H
+#define LIBJAZZ_ARRAYBASE_H
 
 #include "jazz/core/ByteBuffer.h"
+#include <algorithm>
+#include <exception>
 
 namespace jazz {
     template<typename E>
-    class Array {
+    class ArrayBase {
     public:
         using ElementType = E;
     public:
-        Array() = default;
+        ArrayBase() = default;
 
-        virtual ~Array() = default;
+        virtual ~ArrayBase() = default;
+
+    public:
+        static ArrayBase<ElementType> wrap(ElementType *ptr, std::size_t length) {
+            ArrayBase<ElementType> array;
+            array.wrap_raw(ptr, length);
+            return std::move(array);
+        }
 
     public:
 
@@ -27,7 +36,7 @@ namespace jazz {
             if (index < length()) {
                 return elem_data[index];
             } else {
-                return ElementType();
+                throw std::overflow_error("Index overflow.");
             }
         }
 
@@ -48,7 +57,7 @@ namespace jazz {
         }
 
     protected:
-        Array &wrap(ElementType *ptr, std::size_t length) {
+        ArrayBase &wrap_raw(ElementType *ptr, std::size_t length) {
             elem_data = ptr;
             elem_count = length;
             return *this;
@@ -61,4 +70,4 @@ namespace jazz {
 }
 
 
-#endif //LIBJAZZ_ARRAY_H
+#endif //LIBJAZZ_ARRAYBASE_H
