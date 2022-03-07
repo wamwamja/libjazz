@@ -8,6 +8,7 @@
 #include "jazz/core/ByteBuffer.h"
 #include <algorithm>
 #include <exception>
+#include <stdexcept>
 
 namespace jazz {
     template<typename E>

@@ -6,6 +6,7 @@
 #define LIBJAZZ_VECEXPR_H
 
 #include <cstddef>
+#include <cassert>
 
 namespace jazz {
 
