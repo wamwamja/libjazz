@@ -7,7 +7,7 @@
 
 #include "jazz/core/ArrayBase.h"
 
-#include "jazz/core/ExprT.h"
+#include "jazz/core/VecExpr.h"
 
 #include "jazz/core/ByteBuffer.h"
 

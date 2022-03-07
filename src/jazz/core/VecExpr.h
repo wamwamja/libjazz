@@ -2,8 +2,8 @@
 // Created by meitu on 2022/3/4.
 //
 
-#ifndef LIBJAZZ_EXPRT_H
-#define LIBJAZZ_EXPRT_H
+#ifndef LIBJAZZ_VECEXPR_H
+#define LIBJAZZ_VECEXPR_H
 
 #include <cstddef>
 
@@ -50,4 +50,4 @@ namespace jazz {
     }
 }
 
-#endif //LIBJAZZ_EXPRT_H
+#endif //LIBJAZZ_VECEXPR_H
